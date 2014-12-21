@@ -87,13 +87,16 @@ public class CRDTClient {
             valueMap.put(value,1);
         } 
        
-        if(valueMap.get(majorityValue)<3){
-          System.out.print("*********Read Repair**********\n");
+        if(valueMap.get(majorityValue)==2){
+          System.out.println("*********Read Repair**********");
           for(CacheServiceInterface cache : cacheServers ){
             if(cache.getResponseValue()!=majorityValue){
                 cache.put(key,majorityValue); 
             }
           }
+        }
+        if(valueMap.get(majorityValue)==1){
+          System.out.println("****Read failure: No majority, Value inconsistent****");
         }
         return(majorityValue);   
     }
